@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Currículum de Jonathan Carrillo</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+            text-align: center;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            text-align: left;
+        }
+        h2 {
+            color: #333;
+            border-bottom: 2px solid #ddd;
+            padding-bottom: 5px;
+        }
+        ul {
+            list-style: square;
+            padding-left: 20px;
+        }
+        li {
+            padding: 5px 0;
+        }
+        canvas {
+            max-width: 100%;
+        }
+        .profile-img {
+            display: block;
+            margin: 0 auto;
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #333;
+        }
+        .welcome-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .welcome-screen select, .welcome-screen input, .welcome-screen button {
+            margin: 10px;
+            padding: 10px;
+            font-size: 16px;
+        }
+        .back-button {
+            display: block;
+            margin: 20px auto;
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="welcome-screen" id="welcomeScreen">
+        <h1 id="welcomeTitle">Bienvenido</h1>
+        <p id="welcomeText">Ingresa tu nombre y selecciona un idioma</p>
+        <input type="text" id="username" placeholder="Tu nombre">
+        <select id="language" onchange="changeLanguage()">
+            <option value="es">Español</option>
+            <option value="en">English</option>
+        </select>
+        <button onclick="startPresentation()" id="startButton">Comenzar</button>
+    </div>
+
+    <div class="container" id="content" style="display:none;">
+        <h2 id="aboutTitle">Sobre Mí</h2>
+        <img src="foto.jpg" alt="Foto de Jonathan Carrillo" class="profile-img">
+        <p id="aboutText1">Mi nombre es <strong>Jonathan Carrillo</strong> y vivo en la ciudad de Quito, Ecuador.</p>
+        <p id="aboutText2">Actualmente estudio la carrera de Ciencia de Datos en la PUCE.</p>
+        <p id="aboutText3">Tengo conocimientos en administración, manejo de bases de datos utilizando lenguajes de programación y visualización de datos.</p>
+        
+        <h2 id="experienceTitle">Experiencia</h2>
+        <ul id="experienceList">
+            <li>Pasantía en Netlife</li>
+            <li>Telemarketing en Nova Travel Group</li>
+            <li>Ejecutivo comercial en Coris del Ecuador</li>
+        </ul>
+        
+        <h2 id="coursesTitle">Cursos</h2>
+        <ul id="coursesList">
+            <li>Certificado en Excel financiero</li>
+            <li>Curso de cajero bancario</li>
+            <li>Certificado en Power BI</li>
+        </ul>
+        
+        <h2 id="skillsTitle">Habilidades</h2>
+        <canvas id="habilidadesChart"></canvas>
+        
+        <h2 id="contactTitle">Contacto</h2>
+        <p>Correo: <a href="mailto:jonathandct5@hotmail.com">jonathandct5@hotmail.com</a></p>
+        <p>LinkedIn: <a href="https://www.linkedin.com/in/jonathan-carrillo-98626a208" target="_blank">Perfil de LinkedIn</a></p>
+
+        <button class="back-button" onclick="goToWelcome()" id="backButton">Regresar a la Bienvenida</button>
+    </div>
+
+    <script>
+        // Define a dictionary with the translations for both languages
+        const translations = {
+            es: {
+                welcomeTitle: "Bienvenido",
+                welcomeText: "Ingresa tu nombre y selecciona un idioma",
+                startButtonText: "Comenzar",
+                aboutTitle: "Sobre Mí",
+                aboutText1: "Mi nombre es Jonathan Carrillo y vivo en la ciudad de Quito, Ecuador.",
+                aboutText2: "Actualmente estudio la carrera de Ciencia de Datos en la PUCE.",
+                aboutText3: "Tengo conocimientos en administración, manejo de bases de datos utilizando lenguajes de programación y visualización de datos.",
+                experienceTitle: "Experiencia",
+                coursesTitle: "Cursos",
+                skillsTitle: "Habilidades",
+                contactTitle: "Contacto",
+                experienceList: [
+                    "Pasantía en Netlife",
+                    "Telemarketing en Nova Travel Group",
+                    "Ejecutivo comercial en Coris del Ecuador"
+                ],
+                coursesList: [
+                    "Certificado en Excel financiero",
+                    "Curso de cajero bancario",
+                    "Certificado en Power BI"
+                ],
+                backButtonText: "Regresar a la Bienvenida"
+            },
+            en: {
+                welcomeTitle: "Welcome",
+                welcomeText: "Enter your name and select a language",
+                startButtonText: "Start",
+                aboutTitle: "About Me",
+                aboutText1: "My name is Jonathan Carrillo, and I live in Quito, Ecuador.",
+                aboutText2: "I am currently studying Data Science at PUCE.",
+                aboutText3: "I have knowledge in administration, database management using programming languages, and data visualization.",
+                experienceTitle: "Experience",
+                coursesTitle: "Courses",
+                skillsTitle: "Skills",
+                contactTitle: "Contact",
+                experienceList: [
+                    "Internship at Netlife",
+                    "Telemarketing at Nova Travel Group",
+                    "Commercial Executive at Coris del Ecuador"
+                ],
+                coursesList: [
+                    "Certified in Financial Excel",
+                    "Cashier Training Course",
+                    "Certified in Power BI"
+                ],
+                backButtonText: "Back to Welcome"
+            }
+        };
+
+        // Function to update the welcome screen text based on selected language
+        function changeLanguage() {
+            const lang = document.getElementById('language').value;
+            document.getElementById('welcomeTitle').innerText = translations[lang].welcomeTitle;
+            document.getElementById('welcomeText').innerText = translations[lang].welcomeText;
+            document.getElementById('startButton').innerText = translations[lang].startButtonText;
+            document.getElementById('backButton').innerText = translations[lang].backButtonText; // Update back button
+        }
+
+        function startPresentation() {
+            const lang = document.getElementById('language').value;
+            changeLanguageContent(lang);
+            document.getElementById('welcomeScreen').style.display = 'none';
+            document.getElementById('content').style.display = 'block';
+        }
+
+        function changeLanguageContent(lang) {
+            // Update titles
+            document.getElementById('aboutTitle').innerText = translations[lang].aboutTitle;
+            document.getElementById('experienceTitle').innerText = translations[lang].experienceTitle;
+            document.getElementById('coursesTitle').innerText = translations[lang].coursesTitle;
+            document.getElementById('skillsTitle').innerText = translations[lang].skillsTitle;
+            document.getElementById('contactTitle').innerText = translations[lang].contactTitle;
+
+            // Update "About Me" text
+            document.getElementById('aboutText1').innerText = translations[lang].aboutText1;
+            document.getElementById('aboutText2').innerText = translations[lang].aboutText2;
+            document.getElementById('aboutText3').innerText = translations[lang].aboutText3;
+
+            // Update experience list
+            const experienceList = document.getElementById('experienceList');
+            experienceList.innerHTML = "";
+            translations[lang].experienceList.forEach(item => {
+                const li = document.createElement('li');
+                li.innerText = item;
+                experienceList.appendChild(li);
+            });
+
+            // Update courses list
+            const coursesList = document.getElementById('coursesList');
+            coursesList.innerHTML = "";
+            translations[lang].coursesList.forEach(item => {
+                const li = document.createElement('li');
+                li.innerText = item;
+                coursesList.appendChild(li);
+            });
+        }
+
+        function goToWelcome() {
+            document.getElementById('welcomeScreen').style.display = 'flex';
+            document.getElementById('content').style.display = 'none';
+        }
+
+        // Initialize chart
+        var ctx = document.getElementById('habilidadesChart').getContext('2d');
+        var habilidadesChart = new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: ['Administración', 'Bases de Datos', 'Programación', 'Visualización de Datos'],
+                datasets: [{
+                    data: [25, 25, 25, 25],
+                    backgroundColor: ['#ff6384', '#36a2eb', '#ffce56', '#4bc0c0']
+                }]
+            },
+            options: {
+                responsive: true
+            }
+        });
+    </script>
+</body>
+</html>
